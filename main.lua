@@ -52,45 +52,40 @@ function jumpToPlaza()
             TeleportService:TeleportToPlaceInstance(config.placeId, servers[math.random(1, randomCount)], Players.LocalPlayer) 
 end 
 
-function checklisting(uid, gems, item, version, shiny, amount, username, playerid)
+function checklisting(uid, gems, item, version, shiny, amount, username, playerid, method)
     gems = tonumber(gems)
     typeofpet = {}
     pcall(function()
         typeofpet = Library.Directory.Pets[item]
     end)
     if item == "Banana" or
-    string.find(string.lower(item), "seed") or
-    string.find(string.lower(item), "boot") or 
-    string.find(item, "Potion") then
+    item = "Coin" then
         return
     end
-    if typeofpet.huge and gems <= 2000000 then
+    if typeofpet.exclusiveLevel and gems <= 25000  then
         game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
-        processListingInfo(uid, gems, item, version, shiny, amount, username)
-    elseif typeofpet.titanic then
-        game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
-        processListingInfo(uid, gems, item, version, shiny, amount, username)
-    elseif typeofpet.exclusiveLevel and gems <= 25000 then
-        game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
-        processListingInfo(uid, gems, item, version, shiny, amount, username)
+        processListingInfo(uid, gems, item, version, shiny, amount, username, "exclusive under 25k")
     elseif typeofpet.exclusiveLevel and version == 2 and gems <= 250000 then
         game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
-        processListingInfo(uid, gems, item, version, shiny, amount, username)
+        processListingInfo(uid, gems, item, version, shiny, amount, username, "rb exclusive udner 250k")
+    elseif typeofpet.huge and gems <= 2000000 then
+        game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
+        processListingInfo(uid, gems, item, version, shiny, amount, username, "huge under 2m")
     elseif typeofpet.exclusiveLevel and shiny and gems <= 50000 then
         game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
-        processListingInfo(uid, gems, item, version, shiny, amount, username)
+        processListingInfo(uid, gems, item, version, shiny, amount, username, "shiny exclusive under 50k")
     elseif string.find(item, "Egg") and string.find(item, "Exclusive") and gems <= 50000 then
         game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
-        processListingInfo(uid, gems, item, version, shiny, amount, username)
+        processListingInfo(uid, gems, item, version, shiny, amount, username, "exclusive egg with string find under 50k")
     elseif string.find(item, "Titanic") and string.find(item, "Present") and gems <= 300000 then
         game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
-        processListingInfo(uid, gems, item, version, shiny, amount, username)
+        processListingInfo(uid, gems, item, version, shiny, amount, username,"string find titanic present under 300k")
     elseif string.find(string.lower(item), "strength charm") and gems <= 100000 then
         game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
-        processListingInfo(uid, gems, item, version, shiny, amount, username)
+        processListingInfo(uid, gems, item, version, shiny, amount, username, "strength charm under 100k")
     elseif string.find(string.lower(item), "royalty charm") and gems <= 1000000 then
         game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
-        processListingInfo(uid, gems, item, version, shiny, amount, username)
+        processListingInfo(uid, gems, item, version, shiny, amount, username, "royalty charm under 1m")
     elseif gems <= 10 then
         game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
     end
@@ -149,6 +144,11 @@ function processListingInfo(uid, gems, item, version, shiny, amount, boughtFrom)
         {
             name = "PETID:",
             value = tostring(uid),
+            inline = true,
+        },
+        {
+            name = "BUYMETHOD:",
+            value = tostring(method),
             inline = true,
         }
     }
