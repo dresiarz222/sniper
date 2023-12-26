@@ -1,5 +1,5 @@
-game.RunService:Set3dRenderingEnabled(false)
 task.wait(30)
+game.RunService:Set3dRenderingEnabled(false)
 timestart = tick()
 
 if table.find(configuration.blacklistedIds,game.Players.LocalPlayer.UserId) then
