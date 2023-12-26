@@ -1,16 +1,3 @@
---[[ 
-getgenv().configuration = {
-    blacklistedIds = {
-        4525682048,
-        4576426766,
-        4576921176,
-        4531914489,
-        4576425139,
-        4576430043,
-    },
-    hopTime = 300,
-}
---]]
 task.wait()
 game.RunService:Set3dRenderingEnabled(false)
 task.wait(30)
@@ -68,9 +55,6 @@ function jumpToPlaza()
 end 
 
 function checklisting(uid, gems, item, version, shiny, amount, username, playerid)
-    -- version 2 is rainbow
-    -- version 1 is golden
-    -- shiny is nil if not shiny
     gems = tonumber(gems)
     typeofpet = {}
     pcall(function()
@@ -165,4 +149,3 @@ elseif game.PlaceId ~= 15502339080 or checkIfSnipersIngame() == true then
     task.wait(20)
     jumpToPlaza()
 end
-
