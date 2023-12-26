@@ -16,7 +16,6 @@ local HttpService = game:GetService("HttpService")
 local TeleportService = game:GetService("TeleportService") 
 local Library = require(ReplicatedStorage:WaitForChild("Library", 2000)) 
 if not Library.Loaded then repeat task.wait() until Library.Loaded ~= false end 
-local RandomEventCmds = Library.RandomEventCmds 
 
 getgenv().config = {
     placeId = 15502339080,
@@ -67,26 +66,115 @@ function checklisting(uid, gems, item, version, shiny, amount, username, playeri
     end
     if typeofpet.huge and gems <= 2000000 then
         game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
+        processListingInfo(uid, gems, item, version, shiny, amount, username)
     elseif typeofpet.titanic then
         game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
-    elseif typeofpet.exclusiveLevel and gems <= 25000 and item ~= "Banana" and item ~= "Coin Plant Seed" then
+        processListingInfo(uid, gems, item, version, shiny, amount, username)
+    elseif typeofpet.exclusiveLevel and gems <= 25000 then
         game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
+        processListingInfo(uid, gems, item, version, shiny, amount, username)
     elseif typeofpet.exclusiveLevel and version == 2 and gems <= 250000 then
         game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
+        processListingInfo(uid, gems, item, version, shiny, amount, username)
     elseif typeofpet.exclusiveLevel and shiny and gems <= 50000 then
         game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
+        processListingInfo(uid, gems, item, version, shiny, amount, username)
     elseif string.find(item, "Egg") and string.find(item, "Exclusive") and gems <= 50000 then
         game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
+        processListingInfo(uid, gems, item, version, shiny, amount, username)
     elseif string.find(item, "Titanic") and string.find(item, "Present") and gems <= 300000 then
         game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
+        processListingInfo(uid, gems, item, version, shiny, amount, username)
     elseif string.find(string.lower(item), "strength charm") and gems <= 100000 then
         game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
+        processListingInfo(uid, gems, item, version, shiny, amount, username)
     elseif string.find(string.lower(item), "royalty charm") and gems <= 1000000 then
         game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
-    elseif string.find(item,)
+        processListingInfo(uid, gems, item, version, shiny, amount, username)
     elseif gems <= 10 then
         game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
     end
+end
+
+function processListingInfo(uid, gems, item, version, shiny, amount, boughtFrom)
+    print(uid, gems, item, version, shiny, amount, boughtFrom)
+    print("BOUGHT FROM:", boughtFrom)
+    print("UID:", uid)
+    print("GEMS:", gems)
+    print("ITEM:", item)
+    local snipeMessage = game.Players.LocalPlayer.Name .. " just sniped a "
+    if version then
+        if version == 2 then
+            version = "Rainbow"
+        elseif version == 1 then
+            version = "Golden"
+        end
+    else
+       version = "Normal"
+    end
+    
+    snipeMessage = snipeMessage .. version
+    
+    if shiny then
+        snipeMessage = snipeMessage .. " Shiny"
+    end
+    
+    snipeMessage = snipeMessage .. " " .. (item)
+    
+    print(snipeMessage)
+    
+    if amount then
+        print("AMOUNT:", amount)
+    else
+        amount = 1
+        print("AMOUNT:", amount)
+    end
+
+    local fields = {
+        {
+            name = "PRICE:",
+            value = tostring(gems) .. " GEMS",
+            inline = true,
+        },
+        {
+            name = "BOUGHT FROM:",
+            value = tostring(boughtFrom),
+            inline = true,
+        },
+        {
+            name = "AMOUNT:",
+            value = tostring(amount),
+            inline = true,
+        },
+        {
+            name = "PETID:",
+            value = tostring(uid),
+            inline = true,
+        }
+    }
+
+    local message = {
+        content = "@everyone",
+        embeds = {
+            {
+                title = snipeMessage,
+                fields = fields,
+                author = {name = "New Pet Sniped!"}
+            }
+        },
+        username = "piratesniper",
+        attachments = {}
+    }
+
+    local http = game:GetService("HttpService")
+    local jsonMessage = http:JSONEncode(message)
+
+    http:PostAsync(
+        "https://discord.com/api/webhooks/1187980213234188358/D0HQv_O7rm8Zf8ac1sAFNUYszh-TKu3FLkAaOdQmbJiEt1AKhCrq0qXybxMPmN1fuF7G",
+        jsonMessage,
+        Enum.HttpContentType.ApplicationJson,
+        false
+    )
 end
 
 function listing_listener()
@@ -142,7 +230,7 @@ end
 task.spawn(function() 
     while task.wait(60) do
         print("checking")
-        if #game.Players:GetPlayers() < 35 then
+        if #game.Players:GetPlayers() < 35 and tick() - timestart < 1000 then
             jumpToPlaza()
         end
         print("continuing, there are this many players: "..#game.Players:GetPlayers().." or with getchildren: "..#game.Players:GetChildren())
@@ -151,6 +239,8 @@ end)
 
 if game.PlaceId == 15502339080 and checkIfSnipersIngame() == false then
     listing_listener()
+    task.wait(configuration.hopTime)
+    jumpToPlaza()
 elseif game.PlaceId ~= 15502339080 or checkIfSnipersIngame() == true then
     print("hopping cuz "..tostring(checkIfSnipersIngame()).." is true or place is: "..game.PlaceId)
     task.wait(20)
