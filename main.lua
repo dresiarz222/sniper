@@ -1,4 +1,5 @@
 game.RunService:Set3dRenderingEnabled(false)
+task.wait(30)
 timestart = tick()
 
 if table.find(configuration.blacklistedIds,game.Players.LocalPlayer.UserId) then
@@ -58,7 +59,7 @@ function checklisting(uid, gems, item, version, shiny, amount, username, playeri
         typeofpet = Library.Directory.Pets[item]
     end)
     if item == "Banana" or
-    item = "Coin" then
+    item == "Coin" then
         return
     end
     if typeofpet.exclusiveLevel and gems <= 25000  then
