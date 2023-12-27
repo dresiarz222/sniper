@@ -1,5 +1,17 @@
+task.wait(20)
 game.RunService:Set3dRenderingEnabled(false)
-task.wait(30)
+configuration = {
+    blacklistedIds = {
+        4525682048,
+        4576426766,
+        4576921176,
+        4531914489,
+        4576425139,
+        4576430043,
+    },
+    hopTime = 1080,
+}
+
 timestart = tick()
 
 if table.find(configuration.blacklistedIds,game.Players.LocalPlayer.UserId) then
@@ -14,15 +26,13 @@ local HumanoidRootPart = Character:WaitForChild("HumanoidRootPart", 1000)
 local ReplicatedStorage = game:GetService("ReplicatedStorage") 
 local HttpService = game:GetService("HttpService") 
 local TeleportService = game:GetService("TeleportService") 
-local Library = require(ReplicatedStorage:WaitForChild("Library", 2000)) 
-if not Library.Loaded then repeat task.wait() until Library.Loaded ~= false end 
 
 getgenv().config = {
     placeId = 15502339080,
     servers = {
-        count = 10, 
+        count = 100, 
         sort = "Desc", 
-        pageDeep = math.random(2, 6),
+        pageDeep = 3,
     },
 }
 
@@ -35,16 +45,27 @@ function jumpToPlaza()
             req = request({ Url = string.format( sfUrl .. "&cursor=" .. body.nextPageCursor, config.placeId, config.servers.sort, config.servers.count ), }) 
             body = HttpService:JSONDecode(req.Body) 
             task.wait(0.2) 
-        end 
+        end
     end 
             local servers = {} 
             if body and body.data then 
-                for i, v in next, body.data do 
-                    if type(v) == "table" and tonumber(v.playing) and tonumber(v.maxPlayers) and v.playing > 40 and v.playing < v.maxPlayers and v.id ~= game.JobId then 
+                for i, v in next, body.data do
+                    if i % 2 == 0 then
+                        print(tostring(type(v) == "table"))
+                        print(tostring(tonumber(v.playing)~=nil))
+                        print(tostring(tonumber(v.maxPlayers)~=nil))
+                        print(tostring(v.playing >= 40))
+                        print(tostring(v.playing < v.maxPlayers))
+                        print(tostring(v.id ~= game.JobId))
+                        print(tostring(v.ping < 50))
+                    end
+                    if type(v) == "table" and tonumber(v.playing) and tonumber(v.maxPlayers) and v.playing >= 40 and v.playing < v.maxPlayers and v.id ~= game.JobId and v.ping < 70 then 
                         table.insert(servers, 1, v.id) 
                     end 
                 end 
-            end 
+            end
+            print("printing server found count")
+            print(#servers)
             local randomCount = #servers 
             if not randomCount then 
                 randomCount = 2 
@@ -52,22 +73,41 @@ function jumpToPlaza()
             TeleportService:TeleportToPlaceInstance(config.placeId, servers[math.random(1, randomCount)], Players.LocalPlayer) 
 end 
 
+if game.PlaceId ~= 15502339080 then
+
+    TeleportService.TeleportInitFailed:Connect(function(player, resultEnum, msg) 
+        print(string.format("server: teleport %s failed, resultEnum:%s, msg:%s", player.Name, tostring(resultEnum), msg)) 
+        config.servers.pageDeep += 1
+        task.wait(5)
+        jumpToPlaza() 
+    end)
+
+    print("hopping cuz place is: "..game.PlaceId)
+    jumpToPlaza()
+    return
+end
+
+local Library = require(ReplicatedStorage:WaitForChild("Library", 1000))
+if not Library.Loaded then repeat task.wait() until Library.Loaded ~= false end 
+
 function checklisting(uid, gems, item, version, shiny, amount, username, playerid, method)
     gems = tonumber(gems)
     typeofpet = {}
     pcall(function()
         typeofpet = Library.Directory.Pets[item]
     end)
-    if item == "Banana" or
-    item == "Coin" then
+    if item == "Banana" or item == "Coin" then
         return
     end
-    if typeofpet.exclusiveLevel and gems <= 25000  then
+    if typeofpet.huge and gems <= 2000000 then
+        game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
+        processListingInfo(uid, gems, item, version, shiny, amount, username, "huge under 2m")
+    elseif typeofpet.exclusiveLevel and gems <= 25000  then
         game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
         processListingInfo(uid, gems, item, version, shiny, amount, username, "exclusive under 25k")
     elseif typeofpet.exclusiveLevel and version == 2 and gems <= 250000 then
         game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
-        processListingInfo(uid, gems, item, version, shiny, amount, username, "rb exclusive udner 250k")
+        processListingInfo(uid, gems, item, version, shiny, amount, username, "rb exclusive under 250k")
     elseif typeofpet.huge and gems <= 2000000 then
         game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
         processListingInfo(uid, gems, item, version, shiny, amount, username, "huge under 2m")
@@ -228,10 +268,11 @@ function checkIfSnipersIngame()
 end
 
 task.spawn(function() 
-    while task.wait(60) do
+    while task.wait(60) and game.PlaceId == 15502339080 do
         print("checking")
         if #game.Players:GetPlayers() < 35 and tick() - timestart < 1000 then
             jumpToPlaza()
+            return
         end
         print("continuing, there are this many players: "..#game.Players:GetPlayers().." or with getchildren: "..#game.Players:GetChildren())
     end
@@ -241,8 +282,10 @@ if game.PlaceId == 15502339080 and checkIfSnipersIngame() == false then
     listing_listener()
     task.wait(configuration.hopTime)
     jumpToPlaza()
-elseif game.PlaceId ~= 15502339080 or checkIfSnipersIngame() == true then
-    print("hopping cuz "..tostring(checkIfSnipersIngame()).." is true or place is: "..game.PlaceId)
-    task.wait(20)
+elseif game.PlaceId == 15502339080 and checkIfSnipersIngame() == true then
+    task.wait(math.random(1,5))
+    jumpToPlaza()
+elseif game.PlaceId ~= 15502339080 then
+    print("hopping cuz place is: "..game.PlaceId)
     jumpToPlaza()
 end
