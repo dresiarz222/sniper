@@ -1,4 +1,4 @@
-task.wait(20)
+task.wait(5)
 game.RunService:Set3dRenderingEnabled(false)
 configuration = {
     blacklistedIds = {
@@ -46,7 +46,7 @@ function jumpToPlaza()
             body = HttpService:JSONDecode(req.Body) 
             task.wait(0.2) 
         end
-    end 
+    end
             local servers = {} 
             if body and body.data then 
                 for i, v in next, body.data do
@@ -59,7 +59,7 @@ function jumpToPlaza()
             print(#servers)
             local randomCount = #servers 
             if not randomCount then 
-                randomCount = 2 
+                randomCount = 2
             end 
             TeleportService:TeleportToPlaceInstance(config.placeId, servers[math.random(1, randomCount)], Players.LocalPlayer) 
 end 
