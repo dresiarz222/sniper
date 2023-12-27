@@ -1,4 +1,4 @@
-task.wait(5)
+task.wait(15)
 game.RunService:Set3dRenderingEnabled(false)
 configuration = {
     blacklistedIds = {
