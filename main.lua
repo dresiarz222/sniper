@@ -30,7 +30,7 @@ local TeleportService = game:GetService("TeleportService")
 getgenv().config = {
     placeId = 15502339080,
     servers = {
-        count = 100, 
+        count = 25, 
         sort = "Desc", 
         pageDeep = 3,
     },
@@ -50,16 +50,7 @@ function jumpToPlaza()
             local servers = {} 
             if body and body.data then 
                 for i, v in next, body.data do
-                    if i % 2 == 0 then
-                        print(tostring(type(v) == "table"))
-                        print(tostring(tonumber(v.playing)~=nil))
-                        print(tostring(tonumber(v.maxPlayers)~=nil))
-                        print(tostring(v.playing >= 40))
-                        print(tostring(v.playing < v.maxPlayers))
-                        print(tostring(v.id ~= game.JobId))
-                        print(tostring(v.ping < 50))
-                    end
-                    if type(v) == "table" and tonumber(v.playing) and tonumber(v.maxPlayers) and v.playing >= 40 and v.playing < v.maxPlayers and v.id ~= game.JobId and v.ping < 70 then 
+                    if type(v) == "table" and tonumber(v.playing) and tonumber(v.maxPlayers) and v.playing >= 40 and v.playing < v.maxPlayers and v.id ~= game.JobId and v.ping < 100 then 
                         table.insert(servers, 1, v.id) 
                     end 
                 end 
