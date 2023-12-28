@@ -1,4 +1,5 @@
-task.wait()
+task.wait(15)
+
 game.RunService:Set3dRenderingEnabled(false)
 configuration = {
     blacklistedIds = {
@@ -241,6 +242,7 @@ function processListingInfo(uid, gems, item, version, shiny, amount, boughtFrom)
 end
 
 function listing_listener()
+
     for i,v in ipairs(getconnections(game.Players.LocalPlayer.Idled)) do
         v:Disable()
     end
