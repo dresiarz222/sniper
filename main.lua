@@ -1,6 +1,7 @@
+game.RunService:Set3dRenderingEnabled(false)
+
 task.wait(30)
 
-game.RunService:Set3dRenderingEnabled(false)
 configuration = {
     blacklistedIds = {
         4525682048,
@@ -296,17 +297,6 @@ function checkIfSnipersIngame()
     return false
 end
 
-function optimize()
-    for i,v in ipairs(game.Players:GetPlayers()) do
-        if v.UserId ~= game.Players.LocalPlayer.UserId and v.Character then
-            v.Character:ClearAllChildren()
-        end
-    end
-    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(9e9,9e9,9e9)
-    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
-    return
-end
-
 task.spawn(function() 
     while task.wait(60) and game.PlaceId == 15502339080 do
         print("checking")
@@ -319,14 +309,14 @@ task.spawn(function()
 end)
 
 if game.PlaceId == 15502339080 and checkIfSnipersIngame() == false then
-    task.spawn(function() task.wait(10) optimize() end)
     listing_listener()
     task.wait(configuration.hopTime)
     jumpToPlaza()
 elseif game.PlaceId == 15502339080 and checkIfSnipersIngame() == true then
-    task.wait(math.random(1,5))
+    task.wait(math.random(5,20))
     jumpToPlaza()
 elseif game.PlaceId ~= 15502339080 then
     print("hopping cuz place is: "..game.PlaceId)
+    task.wait(10)
     jumpToPlaza()
 end
