@@ -1,4 +1,4 @@
-task.wait(15)
+task.wait()
 game.RunService:Set3dRenderingEnabled(false)
 configuration = {
     blacklistedIds = {
@@ -50,7 +50,7 @@ function jumpToPlaza()
             local servers = {} 
             if body and body.data then 
                 for i, v in next, body.data do
-                    if type(v) == "table" and tonumber(v.playing) and tonumber(v.maxPlayers) and v.playing >= 40 and v.playing < v.maxPlayers and v.id ~= game.JobId then 
+                    if type(v) == "table" and tonumber(v.playing) and tonumber(v.maxPlayers) and v.playing >= 40 and v.playing < v.maxPlayers and v.id ~= game.JobId and v.ping < 200 then 
                         table.insert(servers, 1, v.id) 
                     end 
                 end 
@@ -84,39 +84,71 @@ if not Library.Loaded then repeat task.wait() until Library.Loaded ~= false end
 function checklisting(uid, gems, item, version, shiny, amount, username, playerid, method)
     gems = tonumber(gems)
     typeofpet = {}
-    pcall(function()
+    pcall(function() 
         typeofpet = Library.Directory.Pets[item]
     end)
-    if item == "Banana" or item == "Coin" then
+    if item == "Banana" or item == "Coin" or item == "Snowball Launcher" or item == "Rainbow Swirl" then
         return
     end
     if typeofpet.huge and gems <= 2000000 then
-        game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
-        processListingInfo(uid, gems, item, version, shiny, amount, username, "huge under 2m")
+        local boughtPet, boughtMsg = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
+        if boughtPet ~= true then
+            return
+        end
+        processListingInfo(uid, gems, item, version, shiny, amount, username)
     elseif typeofpet.exclusiveLevel and gems <= 25000  then
-        game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
-        processListingInfo(uid, gems, item, version, shiny, amount, username, "exclusive under 25k")
-    elseif typeofpet.exclusiveLevel and version == 2 and gems <= 250000 then
-        game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
-        processListingInfo(uid, gems, item, version, shiny, amount, username, "rb exclusive under 250k")
-    elseif typeofpet.huge and gems <= 2000000 then
-        game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
-        processListingInfo(uid, gems, item, version, shiny, amount, username, "huge under 2m")
+        local boughtPet, boughtMsg = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
+        if boughtPet ~= true then
+            return
+        end
+        processListingInfo(uid, gems, item, version, shiny, amount, username)
+    elseif typeofpet.exclusiveLevel and version == 2 and gems <= 300000 then
+        local boughtPet, boughtMsg = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
+        if boughtPet ~= true then
+            return
+        end
+        processListingInfo(uid, gems, item, version, shiny, amount, username)
     elseif typeofpet.exclusiveLevel and shiny and gems <= 50000 then
-        game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
-        processListingInfo(uid, gems, item, version, shiny, amount, username, "shiny exclusive under 50k")
-    elseif string.find(item, "Egg") and string.find(item, "Exclusive") and gems <= 50000 then
-        game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
-        processListingInfo(uid, gems, item, version, shiny, amount, username, "exclusive egg with string find under 50k")
-    elseif string.find(item, "Titanic") and string.find(item, "Present") and gems <= 300000 then
-        game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
-        processListingInfo(uid, gems, item, version, shiny, amount, username,"string find titanic present under 300k")
+        local boughtPet, boughtMsg = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
+        if boughtPet ~= true then
+            return
+        end
+        processListingInfo(uid, gems, item, version, shiny, amount, username)
+    elseif item == "Crystal Key" and gems <= 10000 then
+        local boughtPet, boughtMsg = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
+        if boughtPet ~= true then
+            return
+        end
+    elseif item == "Spinny Wheel Ticket" and gems <= 5000 then
+        local boughtPet, boughtMsg = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
+        if boughtPet ~= true then
+            return
+        end
+        processListingInfo(uid, gems, item, version, shiny, amount, username)
+    elseif string.find(item, "Titanic") and string.find(item, "Present") and gems <= 200000 then
+        local boughtPet, boughtMsg = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
+        if boughtPet ~= true then
+            return
+        end
+        processListingInfo(uid, gems, item, version, shiny, amount, username)
     elseif string.find(string.lower(item), "strength charm") and gems <= 100000 then
-        game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
-        processListingInfo(uid, gems, item, version, shiny, amount, username, "strength charm under 100k")
+        local boughtPet, boughtMsg = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
+        if boughtPet ~= true then
+            return
+        end
+        processListingInfo(uid, gems, item, version, shiny, amount, username)
     elseif string.find(string.lower(item), "royalty charm") and gems <= 1000000 then
-        game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
-        processListingInfo(uid, gems, item, version, shiny, amount, username, "royalty charm under 1m")
+        local boughtPet, boughtMsg = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
+        if boughtPet ~= true then
+            return
+        end
+        processListingInfo(uid, gems, item, version, shiny, amount, username)
+    elseif string.find(item, "Egg") and string.find(item, "Exclusive") and gems <= 100000 then
+        local boughtPet, boughtMsg = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
+        if boughtPet ~= true then
+            return
+        end
+        processListingInfo(uid, gems, item, version, shiny, amount, username)
     elseif gems <= 10 then
         game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
     end
@@ -209,6 +241,9 @@ function processListingInfo(uid, gems, item, version, shiny, amount, boughtFrom)
 end
 
 function listing_listener()
+    for i,v in ipairs(getconnections(game.Players.LocalPlayer.Idled)) do
+        v:Disable()
+    end
 
     local virtualuser = game:GetService("VirtualUser")
     game:GetService("Players").LocalPlayer.Idled:connect(function()
@@ -216,6 +251,7 @@ function listing_listener()
         task.wait(5)
         virtualuser:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
     end)
+
 
     local Booths_Broadcast = game:GetService("ReplicatedStorage").Network:WaitForChild("Booths_Broadcast")
     Booths_Broadcast.OnClientEvent:Connect(function(username, message)
@@ -258,6 +294,17 @@ function checkIfSnipersIngame()
     return false
 end
 
+function optimize()
+    for i,v in ipairs(game.Players:GetPlayers()) do
+        if v.UserId ~= game.Players.LocalPlayer.UserId and v.Character then
+            v.Character:ClearAllChildren()
+        end
+    end
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(9e9,9e9,9e9)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+    return
+end
+
 task.spawn(function() 
     while task.wait(60) and game.PlaceId == 15502339080 do
         print("checking")
@@ -269,7 +316,13 @@ task.spawn(function()
     end
 end)
 
+optimize()
+
 if game.PlaceId == 15502339080 and checkIfSnipersIngame() == false then
+    game.Players.PlayerAdded:Connect(function()
+        task.wait(15)
+        optimize()
+    end)
     listing_listener()
     task.wait(configuration.hopTime)
     jumpToPlaza()
