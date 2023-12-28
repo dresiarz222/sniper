@@ -1,4 +1,4 @@
-task.wait(15)
+task.wait(30)
 
 game.RunService:Set3dRenderingEnabled(false)
 configuration = {
@@ -318,13 +318,8 @@ task.spawn(function()
     end
 end)
 
-optimize()
-
 if game.PlaceId == 15502339080 and checkIfSnipersIngame() == false then
-    game.Players.PlayerAdded:Connect(function()
-        task.wait(15)
-        optimize()
-    end)
+    task.spawn(function() task.wait(10) optimize() end)
     listing_listener()
     task.wait(configuration.hopTime)
     jumpToPlaza()
