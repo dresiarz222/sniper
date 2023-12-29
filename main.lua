@@ -278,7 +278,10 @@ end
 
 if game.PlaceId == 15502339080 and checkIfSnipersIngame() == false then
     Library = require(ReplicatedStorage:WaitForChild("Library", 1000))
-    if not Library.Loaded then repeat task.wait() until Library.Loaded ~= false end 
+    task.wait(5)
+    if not Library then
+        jumpToPlaza()
+    end
     listing_listener()
     task.spawn(function()
         while task.wait(10) do
@@ -294,10 +297,10 @@ if game.PlaceId == 15502339080 and checkIfSnipersIngame() == false then
 elseif game.PlaceId == 15502339080 and checkIfSnipersIngame() == true then
     print("youngr alt in plaza soooo... bye !")
     config.pageDeep += 1
-    task.wait(20)
+    task.wait(10)
     jumpToPlaza()
 elseif game.PlaceId ~= 15502339080 then
     print("hopping cuz place is: "..game.PlaceId)
-    task.wait(15)
+    task.wait(10)
     jumpToPlaza()
 end
