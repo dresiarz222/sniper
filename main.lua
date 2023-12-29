@@ -1,4 +1,4 @@
-task.wait(30)
+task.wait(20)
 
 game.RunService:Set3dRenderingEnabled(false)
 
