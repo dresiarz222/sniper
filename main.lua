@@ -32,9 +32,9 @@ local TeleportService = game:GetService("TeleportService")
 getgenv().config = {
     placeId = 15502339080,
     servers = {
-        count = 25, 
+        count = 100, 
         sort = "Desc", 
-        pageDeep = 3,
+        pageDeep = 2,
     },
 }
 
