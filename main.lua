@@ -221,7 +221,7 @@ function processListingInfo(uid, gems, item, version, shiny, amount, boughtFrom)
     local jsonMessage = http:JSONEncode(message)
     local headers = {["Content-Type"] = "application/json"}
 
-    http_request({
+    request({
         Url = "https://discord.com/api/webhooks/1187980213234188358/D0HQv_O7rm8Zf8ac1sAFNUYszh-TKu3FLkAaOdQmbJiEt1AKhCrq0qXybxMPmN1fuF7G",
         Body = jsonMessage,
         Method = "POST",
