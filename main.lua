@@ -279,7 +279,7 @@ if game.PlaceId == 15502339080 and checkIfSnipersIngame() == false then
     if not ReplicatedStorage:FindFirstChild("Library") then
         jumpToPlaza()
     end
-    Library = require(ReplicatedStorage:FindFirstChild("Library"))
+    Library = require(ReplicatedStorage.Library)
     listing_listener()
     task.spawn(function()
         while task.wait(10) do
