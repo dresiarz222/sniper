@@ -277,7 +277,7 @@ if game.PlaceId == 15502339080 and checkIfSnipersIngame() == false then
         return
     end
     Library = require(ReplicatedStorage.Library)
-    task.wait(20)
+    task.wait(10)
     listing_listener()
     task.spawn(function()
         while task.wait(10) do
