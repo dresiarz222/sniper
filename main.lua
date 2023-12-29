@@ -1,6 +1,7 @@
 UserSettings().GameSettings.MasterVolume = 0
-
 game.RunService:Set3dRenderingEnabled(false)
+
+task.wait(10)
 
 getgenv().configuration = {
     blacklistedIds = {
@@ -11,7 +12,7 @@ getgenv().configuration = {
         4576425139,
         4576430043,
     },
-    hopTime = 600,
+    hopTime = 950,
 }
 
 timestart = tick()
@@ -292,12 +293,12 @@ if game.PlaceId == 15502339080 and checkIfSnipersIngame() == false then
     task.wait(configuration.hopTime)
     jumpToPlaza()
 elseif game.PlaceId == 15502339080 and checkIfSnipersIngame() == true then
-    print("youngr alt in plaza soooo... bye !")
+    print("alt in plaza soooo... bye !")
     config.pageDeep += 1
-    task.wait(5)
+    task.wait(10)
     jumpToPlaza()
 elseif game.PlaceId ~= 15502339080 then
     print("hopping cuz place is: "..game.PlaceId)
-    task.wait(5)
+    task.wait(10)
     jumpToPlaza()
 end
