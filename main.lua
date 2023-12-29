@@ -2,6 +2,8 @@ task.wait(30)
 
 game.RunService:Set3dRenderingEnabled(false)
 
+task.wait(5)
+
 configuration = {
     blacklistedIds = {
         4525682048,
@@ -287,7 +289,9 @@ if game.PlaceId == 15502339080 and checkIfSnipersIngame() == false then
     task.wait(configuration.hopTime)
     jumpToPlaza()
 elseif game.PlaceId == 15502339080 and checkIfSnipersIngame() == true then
-    task.wait(math.random(5,20))
+    print("alt in plaza soooo... bye !")
+    config.pageDeep += math.random(1,2)
+    task.wait(30)
     jumpToPlaza()
 elseif game.PlaceId ~= 15502339080 then
     print("hopping cuz place is: "..game.PlaceId)
