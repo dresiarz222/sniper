@@ -231,7 +231,6 @@ function processListingInfo(uid, gems, item, version, shiny, amount, boughtFrom)
 end
 
 function listing_listener()
-
     local Booths_Broadcast = game:GetService("ReplicatedStorage").Network:WaitForChild("Booths_Broadcast")
     Booths_Broadcast.OnClientEvent:Connect(function(username, message)
         if not message then
@@ -275,7 +274,8 @@ end
 
 if game.PlaceId == 15502339080 and checkIfSnipersIngame() == false then
     task.spawn(function() 
-        while task.wait(60) and game.PlaceId == 15502339080 do
+        while true do
+            task.wait(60)
             print("checking")
             if #game.Players:GetPlayers() < 30 and tick() - timestart < 1000 then
                 task.wait(20)
