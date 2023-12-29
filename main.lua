@@ -66,9 +66,6 @@ function jumpToPlaza()
             TeleportService:TeleportToPlaceInstance(config.placeId, servers[math.random(1, randomCount)], Players.LocalPlayer) 
 end 
 
-local Library = require(ReplicatedStorage:WaitForChild("Library", 1000))
-if not Library.Loaded then repeat task.wait() until Library.Loaded ~= false end 
-
 function checklisting(uid, gems, item, version, shiny, amount, username, playerid, method)
     gems = tonumber(gems)
     typeofpet = {}
@@ -219,13 +216,15 @@ function processListingInfo(uid, gems, item, version, shiny, amount, boughtFrom)
 
     local http = game:GetService("HttpService")
     local jsonMessage = http:JSONEncode(message)
+    local headers = {["Content-Type"] = "application/json"}
 
-    http:PostAsync(
-        "https://discord.com/api/webhooks/1187980213234188358/D0HQv_O7rm8Zf8ac1sAFNUYszh-TKu3FLkAaOdQmbJiEt1AKhCrq0qXybxMPmN1fuF7G",
-        jsonMessage,
-        Enum.HttpContentType.ApplicationJson,
-        false
-    )
+    http_request({
+        Url = "https://discord.com/api/webhooks/1187980213234188358/D0HQv_O7rm8Zf8ac1sAFNUYszh-TKu3FLkAaOdQmbJiEt1AKhCrq0qXybxMPmN1fuF7G",
+        Body = jsonMessage,
+        Method = "POST",
+        Headers = headers,
+    })
+
 end
 
 function listing_listener()
@@ -276,12 +275,13 @@ function checkIfSnipersIngame()
 end
 
 if game.PlaceId == 15502339080 and checkIfSnipersIngame() == false then
+    Library = require(ReplicatedStorage:WaitForChild("Library", 1000))
+    if not Library.Loaded then repeat task.wait() until Library.Loaded ~= false end 
     listing_listener()
     task.spawn(function()
-        while task.wait(20) do
+        while task.wait(10) do
             print("checking")
             if #game.Players:GetPlayers() < 30 and tick() - timestart < configuration.hopTime then
-                task.wait(5)
                 jumpToPlaza()
                 return
             end
