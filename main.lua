@@ -11,7 +11,7 @@ getgenv().configuration = {
         4576425139,
         4576430043,
     },
-    hopTime = 900,
+    hopTime = 600,
 }
 
 timestart = tick()
