@@ -1,7 +1,5 @@
 UserSettings().GameSettings.MasterVolume = 0
 
-task.wait(5)
-
 game.RunService:Set3dRenderingEnabled(false)
 
 getgenv().configuration = {
@@ -13,7 +11,7 @@ getgenv().configuration = {
         4576425139,
         4576430043,
     },
-    hopTime = 600,
+    hopTime = 1000,
 }
 
 timestart = tick()
@@ -277,11 +275,11 @@ function checkIfSnipersIngame()
 end
 
 if game.PlaceId == 15502339080 and checkIfSnipersIngame() == false then
-    Library = require(ReplicatedStorage:WaitForChild("Library", 1000))
-    task.wait(5)
-    if not Library then
+    task.wait(15)
+    if not ReplicatedStorage:FindFirstChild("Library") then
         jumpToPlaza()
     end
+    Library = require(ReplicatedStorage:FindFirstChild("Library"))
     listing_listener()
     task.spawn(function()
         while task.wait(10) do
@@ -297,10 +295,10 @@ if game.PlaceId == 15502339080 and checkIfSnipersIngame() == false then
 elseif game.PlaceId == 15502339080 and checkIfSnipersIngame() == true then
     print("youngr alt in plaza soooo... bye !")
     config.pageDeep += 1
-    task.wait(10)
+    task.wait(5)
     jumpToPlaza()
 elseif game.PlaceId ~= 15502339080 then
     print("hopping cuz place is: "..game.PlaceId)
-    task.wait(10)
+    task.wait(5)
     jumpToPlaza()
 end
