@@ -264,7 +264,12 @@ end
 function checkIfSnipersIngame()
     for i,v in ipairs(game:GetService("Players"):GetPlayers()) do
         if table.find(configuration.blacklistedIds,v.UserId) then
-            return true
+            -- youngest userid gets to stay in the plaza
+            if v.UserId < LocalPlayer.UserId then 
+                return true 
+            else
+                return false
+            end
         end
     end
     return false
@@ -288,7 +293,7 @@ if game.PlaceId == 15502339080 and checkIfSnipersIngame() == false then
     jumpToPlaza()
 elseif game.PlaceId == 15502339080 and checkIfSnipersIngame() == true then
     print("alt in plaza soooo... bye !")
-    config.pageDeep += math.random(1,2)
+    config.pageDeep += 1
     task.wait(20)
     jumpToPlaza()
 elseif game.PlaceId ~= 15502339080 then
