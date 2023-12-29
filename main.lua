@@ -1,4 +1,4 @@
-task.wait(20)
+task.wait(10)
 
 game.RunService:Set3dRenderingEnabled(false)
 
@@ -11,7 +11,6 @@ configuration = {
         4576425139,
         4576430043,
     },
-    hopTime = 1080,
 }
 
 timestart = tick()
@@ -34,7 +33,7 @@ getgenv().config = {
     servers = {
         count = 25, 
         sort = "Desc", 
-        pageDeep = math.random(2,3),
+        pageDeep = 3,
     },
 }
 
@@ -265,7 +264,7 @@ function checkIfSnipersIngame()
     for i,v in ipairs(game:GetService("Players"):GetPlayers()) do
         if table.find(configuration.blacklistedIds,v.UserId) then
             -- youngest userid gets to stay in the plaza
-            if v.UserId < LocalPlayer.UserId then 
+            if LocalPlayer.UserId > v.UserId then 
                 return true 
             else
                 return false
@@ -276,25 +275,23 @@ function checkIfSnipersIngame()
 end
 
 if game.PlaceId == 15502339080 and checkIfSnipersIngame() == false then
-    task.spawn(function() 
-        while true do
-            task.wait(60)
+    listing_listener()
+    task.spawn(function()
+        while task.wait(20) do
             print("checking")
             if #game.Players:GetPlayers() < 30 and tick() - timestart < 1000 then
-                task.wait(20)
+                task.wait(10)
                 jumpToPlaza()
                 return
             end
-            print("continuing, there are this many players: "..#game.Players:GetPlayers().." or with getchildren: "..#game.Players:GetChildren())
         end
     end)
-    listing_listener()
-    task.wait(configuration.hopTime)
+    task.wait(1000)
     jumpToPlaza()
 elseif game.PlaceId == 15502339080 and checkIfSnipersIngame() == true then
-    print("alt in plaza soooo... bye !")
+    print("youngr alt in plaza soooo... bye !")
     config.pageDeep += 1
-    task.wait(20)
+    task.wait(10)
     jumpToPlaza()
 elseif game.PlaceId ~= 15502339080 then
     print("hopping cuz place is: "..game.PlaceId)
