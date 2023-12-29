@@ -1,4 +1,4 @@
-task.wait(30)
+task.wait(20)
 
 game.RunService:Set3dRenderingEnabled(false)
 
@@ -32,7 +32,7 @@ local TeleportService = game:GetService("TeleportService")
 getgenv().config = {
     placeId = 15502339080,
     servers = {
-        count = 10, 
+        count = 25, 
         sort = "Desc", 
         pageDeep = math.random(2,3),
     },
@@ -289,7 +289,7 @@ if game.PlaceId == 15502339080 and checkIfSnipersIngame() == false then
 elseif game.PlaceId == 15502339080 and checkIfSnipersIngame() == true then
     print("alt in plaza soooo... bye !")
     config.pageDeep += math.random(1,2)
-    task.wait(30)
+    task.wait(20)
     jumpToPlaza()
 elseif game.PlaceId ~= 15502339080 then
     print("hopping cuz place is: "..game.PlaceId)
