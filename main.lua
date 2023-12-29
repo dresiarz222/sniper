@@ -12,7 +12,7 @@ getgenv().configuration = {
         4576425139,
         4576430043,
     },
-    hopTime = 950,
+    hopTime = 800,
 }
 
 timestart = tick()
@@ -33,9 +33,9 @@ local TeleportService = game:GetService("TeleportService")
 getgenv().config = {
     placeId = 15502339080,
     servers = {
-        count = 25, 
+        count = 10, 
         sort = "Desc", 
-        pageDeep = 3,
+        pageDeep = 2,
     },
 }
 
@@ -62,7 +62,6 @@ function jumpToPlaza()
             print(#servers)
             if #servers > 0 then
                 TeleportService:TeleportToPlaceInstance(config.placeId, servers[math.random(1, #servers)], Players.LocalPlayer) 
-
             else
                 task.wait(60)
                 jumpToPlaza()
