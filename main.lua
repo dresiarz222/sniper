@@ -11,7 +11,7 @@ getgenv().configuration = {
         4576425139,
         4576430043,
     },
-    hopTime = 1000,
+    hopTime = 900,
 }
 
 timestart = tick()
@@ -275,7 +275,7 @@ function checkIfSnipersIngame()
 end
 
 if game.PlaceId == 15502339080 and checkIfSnipersIngame() == false then
-    task.wait(15)
+    task.wait(10)
     if not ReplicatedStorage:FindFirstChild("Library") then
         jumpToPlaza()
     end
