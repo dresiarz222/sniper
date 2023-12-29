@@ -1,8 +1,8 @@
-task.wait(10)
+task.wait(5)
 
 game.RunService:Set3dRenderingEnabled(false)
 
-configuration = {
+getgenv().configuration = {
     blacklistedIds = {
         4525682048,
         4576426766,
@@ -11,6 +11,7 @@ configuration = {
         4576425139,
         4576430043,
     },
+    hopTime = 300,
 }
 
 timestart = tick()
@@ -279,19 +280,19 @@ if game.PlaceId == 15502339080 and checkIfSnipersIngame() == false then
     task.spawn(function()
         while task.wait(20) do
             print("checking")
-            if #game.Players:GetPlayers() < 30 and tick() - timestart < 1000 then
-                task.wait(10)
+            if #game.Players:GetPlayers() < 30 and tick() - timestart < configuration.hopTime then
+                task.wait(5)
                 jumpToPlaza()
                 return
             end
         end
     end)
-    task.wait(1000)
+    task.wait(configuration.hopTime)
     jumpToPlaza()
 elseif game.PlaceId == 15502339080 and checkIfSnipersIngame() == true then
     print("youngr alt in plaza soooo... bye !")
     config.pageDeep += 1
-    task.wait(10)
+    task.wait(5)
     jumpToPlaza()
 elseif game.PlaceId ~= 15502339080 then
     print("hopping cuz place is: "..game.PlaceId)
