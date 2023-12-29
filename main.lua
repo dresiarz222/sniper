@@ -33,9 +33,9 @@ local TeleportService = game:GetService("TeleportService")
 getgenv().config = {
     placeId = 15502339080,
     servers = {
-        count = 100, 
+        count = 25, 
         sort = "Desc", 
-        pageDeep = 2,
+        pageDeep = 3,
     },
 }
 
@@ -60,11 +60,14 @@ function jumpToPlaza()
             end
             print("printing server found count")
             print(#servers)
-            local randomCount = #servers 
-            if not randomCount then 
-                randomCount = 2
-            end 
-            TeleportService:TeleportToPlaceInstance(config.placeId, servers[math.random(1, randomCount)], Players.LocalPlayer) 
+            if #servers > 0 then
+                TeleportService:TeleportToPlaceInstance(config.placeId, servers[math.random(1, #servers)], Players.LocalPlayer) 
+
+            else
+                task.wait(60)
+                jumpToPlaza()
+                return
+            end      
 end 
 
 function checklisting(uid, gems, item, version, shiny, amount, username, playerid, method)
