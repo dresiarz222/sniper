@@ -263,23 +263,21 @@ end
 function checkIfSnipersIngame()
     for i,v in ipairs(game:GetService("Players"):GetPlayers()) do
         if table.find(configuration.blacklistedIds,v.UserId) then
-            -- youngest userid gets to stay in the plaza
-            if LocalPlayer.UserId > v.UserId then 
-                return true 
-            else
-                return false
-            end
+            return true
         end
     end
     return false
 end
 
 if game.PlaceId == 15502339080 and checkIfSnipersIngame() == false then
-    task.wait(10)
+    task.wait(20)
     if not ReplicatedStorage:FindFirstChild("Library") then
+        print("library bugged, hopping")
         jumpToPlaza()
+        return
     end
     Library = require(ReplicatedStorage.Library)
+    task.wait(20)
     listing_listener()
     task.spawn(function()
         while task.wait(10) do
@@ -288,6 +286,7 @@ if game.PlaceId == 15502339080 and checkIfSnipersIngame() == false then
                 jumpToPlaza()
                 return
             end
+            print("continuing cuz "..#game.Players:GetPlayers().." players")
         end
     end)
     task.wait(configuration.hopTime)
