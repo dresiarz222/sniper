@@ -1,4 +1,4 @@
-task.wait(20)
+task.wait(30)
 
 game.RunService:Set3dRenderingEnabled(false)
 
@@ -32,9 +32,9 @@ local TeleportService = game:GetService("TeleportService")
 getgenv().config = {
     placeId = 15502339080,
     servers = {
-        count = 25, 
+        count = 10, 
         sort = "Desc", 
-        pageDeep = 3,
+        pageDeep = math.random(2,3),
     },
 }
 
@@ -46,13 +46,13 @@ function jumpToPlaza()
         for i = 1, config.servers.pageDeep, 1 do 
             req = request({ Url = string.format( sfUrl .. "&cursor=" .. body.nextPageCursor, config.placeId, config.servers.sort, config.servers.count ), }) 
             body = HttpService:JSONDecode(req.Body) 
-            task.wait(0.2) 
+            task.wait(0.1)
         end
     end
             local servers = {} 
             if body and body.data then 
                 for i, v in next, body.data do
-                    if type(v) == "table" and tonumber(v.playing) and tonumber(v.maxPlayers) and v.playing >= 40 and v.playing < v.maxPlayers and v.id ~= game.JobId and v.ping < 200 then 
+                    if type(v) == "table" and tonumber(v.playing) and tonumber(v.maxPlayers) and v.playing >= 40 and v.playing < v.maxPlayers and v.id ~= game.JobId then 
                         table.insert(servers, 1, v.id) 
                     end 
                 end 
@@ -290,13 +290,7 @@ elseif game.PlaceId == 15502339080 and checkIfSnipersIngame() == true then
     task.wait(math.random(5,20))
     jumpToPlaza()
 elseif game.PlaceId ~= 15502339080 then
-    TeleportService.TeleportInitFailed:Connect(function(player, resultEnum, msg) 
-        print(string.format("server: teleport %s failed, resultEnum:%s, msg:%s", player.Name, tostring(resultEnum), msg)) 
-        config.servers.pageDeep += 1
-        task.wait(5)
-        jumpToPlaza() 
-    end)
     print("hopping cuz place is: "..game.PlaceId)
-    task.wait(20)
+    task.wait(30)
     jumpToPlaza()
 end
