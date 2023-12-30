@@ -230,6 +230,7 @@ function processListingInfo(uid, gems, item, version, shiny, amount, boughtFrom)
 
 end
 
+
 function listing_listener()
     local Booths_Broadcast = game:GetService("ReplicatedStorage").Network:WaitForChild("Booths_Broadcast")
     Booths_Broadcast.OnClientEvent:Connect(function(username, message)
