@@ -130,7 +130,7 @@ function checklisting(uid, gems, item, version, shiny, amount, username, playeri
             return
         end
         processListingInfo(uid, gems, item, version, shiny, amount, username)
-    elseif string.find(item, "Titanic") and string.find(item, "Present") and gems <= 200000 then
+    elseif string.find(item, "Titanic") and string.find(item, "Present") and gems <= 50000 then
         local boughtPet, boughtMsg = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
         if boughtPet ~= true then
             return
@@ -148,7 +148,7 @@ function checklisting(uid, gems, item, version, shiny, amount, username, playeri
             return
         end
         processListingInfo(uid, gems, item, version, shiny, amount, username)
-    elseif string.find(item, "Egg") and string.find(item, "Exclusive") and gems <= 100000 then
+    elseif string.find(item, "Egg") and string.find(item, "Exclusive") and gems <= 200000 then
         local boughtPet, boughtMsg = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
         if boughtPet ~= true then
             return
@@ -289,6 +289,13 @@ function checkIfSnipersIngame()
     end
     return false
 end
+
+TeleportService.TeleportInitFailed:Connect(function(player, resultEnum, msg) 
+    print(string.format("server: teleport %s failed, resultEnum:%s, msg:%s", player.Name, tostring(resultEnum), msg)) 
+    config.servers.pageDeep += 1
+    task.wait(60)
+    jumpToPlaza()
+end)
 
 if game.PlaceId == 15502339080 and checkIfSnipersIngame() == false then
     task.wait(waittime)
