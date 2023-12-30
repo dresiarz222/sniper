@@ -1,8 +1,6 @@
 UserSettings().GameSettings.MasterVolume = 0
 game.RunService:Set3dRenderingEnabled(false)
-
-task.wait(10)
-
+waittime = 30
 getgenv().configuration = {
     blacklistedIds = {
         4525682048,
@@ -14,6 +12,7 @@ getgenv().configuration = {
     },
     hopTime = 600,
 }
+
 
 timestart = tick()
 
@@ -33,7 +32,7 @@ local TeleportService = game:GetService("TeleportService")
 getgenv().config = {
     placeId = 15502339080,
     servers = {
-        count = 10, 
+        count = 25, 
         sort = "Desc", 
         pageDeep = 2,
     },
@@ -63,7 +62,7 @@ function jumpToPlaza()
             if #servers > 0 then
                 TeleportService:TeleportToPlaceInstance(config.placeId, servers[math.random(1, #servers)], Players.LocalPlayer) 
             else
-                task.wait(120)
+                task.wait(240)
                 jumpToPlaza()
                 return
             end      
@@ -274,14 +273,14 @@ function checkIfSnipersIngame()
 end
 
 if game.PlaceId == 15502339080 and checkIfSnipersIngame() == false then
-    task.wait(20)
+    task.wait(waittime)
     if not ReplicatedStorage:FindFirstChild("Library") then
         print("library bugged, hopping")
         jumpToPlaza()
         return
     end
     Library = require(ReplicatedStorage.Library)
-    task.wait(10)
+    task.wait(waittime)
     listing_listener()
     task.spawn(function()
         while task.wait(10) do
@@ -298,10 +297,10 @@ if game.PlaceId == 15502339080 and checkIfSnipersIngame() == false then
 elseif game.PlaceId == 15502339080 and checkIfSnipersIngame() == true then
     print("alt in plaza soooo... bye !")
     config.servers.pageDeep += 1
-    task.wait(10)
+    task.wait(waittime)
     jumpToPlaza()
 elseif game.PlaceId ~= 15502339080 then
     print("hopping cuz place is: "..game.PlaceId)
-    task.wait(10)
+    task.wait(waittime)
     jumpToPlaza()
 end
