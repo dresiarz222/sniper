@@ -12,7 +12,7 @@ getgenv().configuration = {
         4576425139,
         4576430043,
     },
-    hopTime = 800,
+    hopTime = 600,
 }
 
 timestart = tick()
@@ -63,7 +63,7 @@ function jumpToPlaza()
             if #servers > 0 then
                 TeleportService:TeleportToPlaceInstance(config.placeId, servers[math.random(1, #servers)], Players.LocalPlayer) 
             else
-                task.wait(60)
+                task.wait(120)
                 jumpToPlaza()
                 return
             end      
@@ -296,7 +296,7 @@ if game.PlaceId == 15502339080 and checkIfSnipersIngame() == false then
     jumpToPlaza()
 elseif game.PlaceId == 15502339080 and checkIfSnipersIngame() == true then
     print("alt in plaza soooo... bye !")
-    config.pageDeep += 1
+    config.servers.pageDeep += 1
     task.wait(10)
     jumpToPlaza()
 elseif game.PlaceId ~= 15502339080 then
