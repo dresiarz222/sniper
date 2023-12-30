@@ -109,6 +109,21 @@ function checklisting(uid, gems, item, version, shiny, amount, username, playeri
         if boughtPet ~= true then
             return
         end
+    elseif item == "Chest Mimic" and gems <= 1500000 then
+        local boughtPet, boughtMsg = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
+        if boughtPet ~= true then
+            return
+        end
+    elseif item == "Diamond Chest Mimic" and gems <= 1500000 then
+        local boughtPet, boughtMsg = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
+        if boughtPet ~= true then
+            return
+        end
+    elseif item == "Lucky Block" and gems <= 500000 then
+        local boughtPet, boughtMsg = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
+        if boughtPet ~= true then
+            return
+        end
     elseif item == "Spinny Wheel Ticket" and gems <= 5000 then
         local boughtPet, boughtMsg = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
         if boughtPet ~= true then
