@@ -1,6 +1,9 @@
 UserSettings().GameSettings.MasterVolume = 0
 game.RunService:Set3dRenderingEnabled(false)
 waittime = 30
+
+task.wait(waittime)
+
 getgenv().configuration = {
     blacklistedIds = {
         4525682048,
@@ -151,7 +154,7 @@ function processListingInfo(uid, gems, item, version, shiny, amount, boughtFrom)
     if version then
         if version == 2 then
             version = "Rainbow"
-        elseif version == 1 
+        elseif version == 1 then
             version = "Golden"
         end
     else
@@ -276,6 +279,7 @@ if game.PlaceId == 15502339080 and checkIfSnipersIngame() == false then
     task.wait(waittime)
     if not ReplicatedStorage:FindFirstChild("Library") then
         print("library bugged, hopping")
+        task.wait(waittime)
         jumpToPlaza()
         return
     end
