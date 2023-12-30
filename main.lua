@@ -151,7 +151,7 @@ function processListingInfo(uid, gems, item, version, shiny, amount, boughtFrom)
     if version then
         if version == 2 then
             version = "Rainbow"
-        elseif version == 1 then
+        elseif version == 1 
             version = "Golden"
         end
     else
@@ -284,12 +284,10 @@ if game.PlaceId == 15502339080 and checkIfSnipersIngame() == false then
     listing_listener()
     task.spawn(function()
         while task.wait(10) do
-            print("checking")
             if #game.Players:GetPlayers() < 30 and tick() - timestart < configuration.hopTime then
                 jumpToPlaza()
                 return
             end
-            print("continuing cuz "..#game.Players:GetPlayers().." players")
         end
     end)
     task.wait(configuration.hopTime)
