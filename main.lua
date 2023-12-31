@@ -14,7 +14,7 @@ getgenv().configuration = {
         4576425139,
         4576430043,
     },
-    hopTime = 700,
+    hopTime = 1000,
 }
 
 
@@ -245,6 +245,16 @@ end
 
 function listing_listener()
     local Booths_Broadcast = game:GetService("ReplicatedStorage").Network:WaitForChild("Booths_Broadcast")
+    local vu = game:GetService("VirtualUser")
+    for i,v in pairs(getconnections(game:GetService("Players").LocalPlayer.Idled)) do
+        v:Disable()
+    end
+    task.wait(5)
+    game:GetService("Players").LocalPlayer.Idled:connect(function() 
+        vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame) 
+        wait(5) 
+        vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+    end)
     Booths_Broadcast.OnClientEvent:Connect(function(username, message)
         if not message then
             return
@@ -314,7 +324,6 @@ if game.PlaceId == 15502339080 and checkIfSnipersIngame() == false then
     jumpToPlaza()
 elseif game.PlaceId == 15502339080 and checkIfSnipersIngame() == true then
     print("alt in plaza soooo... bye !")
-    config.servers.pageDeep += 1
     task.wait(waittime)
     jumpToPlaza()
 elseif game.PlaceId ~= 15502339080 then
