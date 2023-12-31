@@ -13,7 +13,7 @@ getgenv().configuration = {
         4576425139,
         4576430043,
     },
-    hopTime = 600,
+    hopTime = 700,
 }
 
 
@@ -35,7 +35,7 @@ local TeleportService = game:GetService("TeleportService")
 getgenv().config = {
     placeId = 15502339080,
     servers = {
-        count = 25, 
+        count = 10, 
         sort = "Desc", 
         pageDeep = 2,
     },
@@ -293,7 +293,7 @@ end
 TeleportService.TeleportInitFailed:Connect(function(player, resultEnum, msg) 
     print(string.format("server: teleport %s failed, resultEnum:%s, msg:%s", player.Name, tostring(resultEnum), msg)) 
     config.servers.pageDeep += 1
-    task.wait(60)
+    task.wait(120)
     jumpToPlaza()
 end)
 
@@ -309,7 +309,7 @@ if game.PlaceId == 15502339080 and checkIfSnipersIngame() == false then
     task.wait(waittime)
     listing_listener()
     task.spawn(function()
-        while task.wait(10) do
+        while task.wait(20) do
             if #game.Players:GetPlayers() < 30 and tick() - timestart < configuration.hopTime then
                 jumpToPlaza()
                 return
