@@ -1,5 +1,6 @@
 UserSettings().GameSettings.MasterVolume = 0
 game.RunService:Set3dRenderingEnabled(false)
+
 waittime = 30
 
 task.wait(waittime)
@@ -13,7 +14,7 @@ getgenv().configuration = {
         4576425139,
         4576430043,
     },
-    hopTime = 700,
+    hopTime = 650,
 }
 
 
@@ -35,40 +36,35 @@ local TeleportService = game:GetService("TeleportService")
 getgenv().config = {
     placeId = 15502339080,
     servers = {
-        count = 25, 
+        count = 50, 
         sort = "Desc", 
-        pageDeep = 2,
+        pageDeep = 1,
     },
 }
 
 function jumpToPlaza() 
     local sfUrl = "https://games.roblox.com/v1/games/%s/servers/Public?sortOrder=%s&limit=%s&excludeFullGames=true" 
-    local req = request({ Url = string.format(sfUrl, config.placeId, config.servers.sort, config.servers.count) }) 
+    local reqUrl = string.format(sfUrl, config.placeId, config.servers.sort, config.servers.count)
+    local req = request({ Url = reqUrl })
     local body = HttpService:JSONDecode(req.Body) 
-    if config.servers.pageDeep > 1 then 
-        for i = 1, config.servers.pageDeep, 1 do 
-            req = request({ Url = string.format( sfUrl .. "&cursor=" .. body.nextPageCursor, config.placeId, config.servers.sort, config.servers.count ), }) 
-            body = HttpService:JSONDecode(req.Body) 
-            task.wait(0.1)
-        end
+    local servers = {} 
+    if body and body.data then 
+        for i, v in next, body.data do
+            if type(v) == "table" and tonumber(v.playing) and tonumber(v.maxPlayers) and v.playing >= 40 and v.playing < (v.maxPlayers - 2) and v.id ~= game.JobId and v.ping <= (game.Players.LocalPlayer:GetNetworkPing()*2000) then 
+                print(game.Players.LocalPlayer:GetNetworkPing()*2000)
+                table.insert(servers, 1, v.id) 
+            end 
+        end 
     end
-            local servers = {} 
-            if body and body.data then 
-                for i, v in next, body.data do
-                    if type(v) == "table" and tonumber(v.playing) and tonumber(v.maxPlayers) and v.playing >= 40 and v.playing < v.maxPlayers and v.id ~= game.JobId then 
-                        table.insert(servers, 1, v.id) 
-                    end 
-                end 
-            end
-            print("printing server found count")
-            print(#servers)
-            if #servers > 0 then
-                TeleportService:TeleportToPlaceInstance(config.placeId, servers[math.random(1, #servers)], Players.LocalPlayer) 
-            else
-                task.wait(240)
-                jumpToPlaza()
-                return
-            end      
+    print("printing server found count")
+    print(#servers)
+    if #servers > 0 then
+        TeleportService:TeleportToPlaceInstance(config.placeId, servers[math.random(1, #servers)], Players.LocalPlayer) 
+    else
+        task.wait(30)
+        jumpToPlaza()
+        return
+    end      
 end 
 
 function checklisting(uid, gems, item, version, shiny, amount, username, playerid, method)
@@ -292,8 +288,7 @@ end
 
 TeleportService.TeleportInitFailed:Connect(function(player, resultEnum, msg) 
     print(string.format("server: teleport %s failed, resultEnum:%s, msg:%s", player.Name, tostring(resultEnum), msg)) 
-    config.servers.pageDeep += 1
-    task.wait(120)
+    task.wait(20)
     jumpToPlaza()
 end)
 
