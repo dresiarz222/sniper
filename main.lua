@@ -2,7 +2,7 @@ UserSettings().GameSettings.MasterVolume = 0
 game.RunService:Set3dRenderingEnabled(false)
 
 if not waittime then
-    waittime = 20
+    waittime = 30
 end
 
 task.wait(waittime)
@@ -249,9 +249,9 @@ function listing_listener()
     local Booths_Broadcast = game:GetService("ReplicatedStorage").Network:WaitForChild("Booths_Broadcast")
     local virtualuser = game:GetService("VirtualUser")
     game:GetService("Players").LocalPlayer.Idled:connect(function()
-    virtualuser:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
-    wait(5)
-    virtualuser:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+        virtualuser:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+        wait(5)
+        virtualuser:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
     end)
     Booths_Broadcast.OnClientEvent:Connect(function(username, message)
         if not message then
