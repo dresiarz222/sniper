@@ -16,7 +16,7 @@ getgenv().configuration = {
         4576425139,
         4576430043,
     },
-    hopTime = 900,
+    hopTime = 600,
 }
 
 
@@ -303,7 +303,6 @@ if game.PlaceId == 15502339080 and checkIfSnipersIngame() == false then
     task.wait(waittime)
     if not ReplicatedStorage:FindFirstChild("Library") then
         print("library bugged, hopping")
-        task.wait(waittime)
         jumpToPlaza()
         return
     end
@@ -322,10 +321,8 @@ if game.PlaceId == 15502339080 and checkIfSnipersIngame() == false then
     jumpToPlaza()
 elseif game.PlaceId == 15502339080 and checkIfSnipersIngame() == true then
     print("alt in plaza soooo... bye !")
-    task.wait(waittime)
     jumpToPlaza()
 elseif game.PlaceId ~= 15502339080 then
     print("hopping cuz place is: "..game.PlaceId)
-    task.wait(waittime)
     jumpToPlaza()
 end
