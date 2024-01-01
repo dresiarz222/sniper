@@ -2,7 +2,7 @@ UserSettings().GameSettings.MasterVolume = 0
 game.RunService:Set3dRenderingEnabled(false)
 
 if not waittime then
-    waittime = 20
+    waittime = 30
 end
 
 task.wait(waittime)
@@ -16,7 +16,7 @@ getgenv().configuration = {
         4576425139,
         4576430043,
     },
-    hopTime = 1800,
+    hopTime = 600,
 }
 
 
@@ -247,16 +247,12 @@ end
 
 function listing_listener()
     local Booths_Broadcast = game:GetService("ReplicatedStorage").Network:WaitForChild("Booths_Broadcast")
-    local vu = game:GetService("VirtualUser")
-    for i,v in pairs(getconnections(game:GetService("Players").LocalPlayer.Idled)) do
-        v:Disable()
-    end
-    task.wait(5)
-    game:GetService("Players").LocalPlayer.Idled:connect(function() 
-        vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame) 
-        task.wait(5) 
-        vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
-    end)
+    --local vu = game:GetService("VirtualUser")
+    --game:GetService("Players").LocalPlayer.Idled:connect(function() 
+    --    vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame) 
+    --    task.wait(5) 
+    --    vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+    --end)
     Booths_Broadcast.OnClientEvent:Connect(function(username, message)
         if not message then
             return
@@ -290,9 +286,11 @@ end
 
 function optimize()
     plr = game.Players.LocalPlayer
-    hrp = plr.Character:WaitForChild("HumanoidRootPart",1000)
-    hrp.CFrame = CFrame.new(9e9,9e9,9e9)
-    hrp.Anchored = true
+    for i,v in ipairs(game.Players:GetPlayers()) do
+        if v.UserId ~= plr.UserId then
+            v.Character:ClearAllChildren()
+        end
+    end
 end
 
 function checkIfSnipersIngame()
@@ -324,7 +322,7 @@ if game.PlaceId == 15502339080 and checkIfSnipersIngame() == false then
     listing_listener()
     task.spawn(function()
         while task.wait(10) do
-            if #game.Players:GetPlayers() < 35 and tick() - timestart < (configuration.hopTime-200) then
+            if #game.Players:GetPlayers() < 35 and tick() - timestart < configuration.hopTime then
                 jumpToPlaza()
                 return
             end
