@@ -1,7 +1,9 @@
 UserSettings().GameSettings.MasterVolume = 0
 game.RunService:Set3dRenderingEnabled(false)
 
-waittime = 30
+if not waittime then
+    waittime = 30
+end
 
 task.wait(waittime)
 
