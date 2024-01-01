@@ -2,7 +2,7 @@ UserSettings().GameSettings.MasterVolume = 0
 game.RunService:Set3dRenderingEnabled(false)
 
 if not waittime then
-    waittime = 30
+    waittime = 20
 end
 
 task.wait(waittime)
@@ -16,7 +16,7 @@ getgenv().configuration = {
         4576425139,
         4576430043,
     },
-    hopTime = 1000,
+    hopTime = 1800,
 }
 
 
@@ -62,7 +62,7 @@ function jumpToPlaza()
     if #servers > 0 then
         TeleportService:TeleportToPlaceInstance(config.placeId, servers[math.random(1, #servers)], Players.LocalPlayer) 
     else
-        task.wait(30)
+        task.wait(waittime)
         jumpToPlaza()
         return
     end      
@@ -254,7 +254,7 @@ function listing_listener()
     task.wait(5)
     game:GetService("Players").LocalPlayer.Idled:connect(function() 
         vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame) 
-        wait(5) 
+        task.wait(5) 
         vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
     end)
     Booths_Broadcast.OnClientEvent:Connect(function(username, message)
@@ -288,6 +288,13 @@ function listing_listener()
 print("initiated")
 end
 
+function optimize()
+    plr = game.Players.LocalPlayer
+    hrp = plr.Character:WaitForChild("HumanoidRootPart",1000)
+    hrp.CFrame = CFrame.new(9e9,9e9,9e9)
+    hrp.Anchored = true
+end
+
 function checkIfSnipersIngame()
     for i,v in ipairs(game:GetService("Players"):GetPlayers()) do
         if table.find(configuration.blacklistedIds,v.UserId) then
@@ -299,7 +306,7 @@ end
 
 TeleportService.TeleportInitFailed:Connect(function(player, resultEnum, msg) 
     print(string.format("server: teleport %s failed, resultEnum:%s, msg:%s", player.Name, tostring(resultEnum), msg)) 
-    task.wait(20)
+    task.wait(waittime)
     jumpToPlaza()
 end)
 
@@ -312,11 +319,12 @@ if game.PlaceId == 15502339080 and checkIfSnipersIngame() == false then
         return
     end
     Library = require(ReplicatedStorage.Library)
+    optimize()
     task.wait(waittime)
     listing_listener()
     task.spawn(function()
-        while task.wait(20) do
-            if #game.Players:GetPlayers() < 30 and tick() - timestart < configuration.hopTime then
+        while task.wait(10) do
+            if #game.Players:GetPlayers() < 35 and tick() - timestart < configuration.hopTime then
                 jumpToPlaza()
                 return
             end
