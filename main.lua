@@ -248,9 +248,6 @@ end
 function listing_listener()
     local Booths_Broadcast = game:GetService("ReplicatedStorage").Network:WaitForChild("Booths_Broadcast")
     local virtualuser = game:GetService("VirtualUser")
-    for i,v in pairs(getconnections(game:GetService("Players").LocalPlayer.Idled)) do
-        v:Disable()
-    end
     game:GetService("Players").LocalPlayer.Idled:connect(function()
     virtualuser:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
     wait(5)
@@ -315,7 +312,7 @@ if game.PlaceId == 15502339080 and checkIfSnipersIngame() == false then
     listing_listener()
     task.spawn(function()
         while task.wait(10) do
-            if #game.Players:GetPlayers() < 35 and tick() - timestart < configuration.hopTime then
+            if #game.Players:GetPlayers() < 30 and tick() - timestart < configuration.hopTime then
                 jumpToPlaza()
                 return
             end
