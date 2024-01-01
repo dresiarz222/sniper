@@ -44,7 +44,7 @@ getgenv().config = {
     },
 }
 
-function jumpToPlaza() 
+function jumpToPlaza()
     local sfUrl = "https://games.roblox.com/v1/games/%s/servers/Public?sortOrder=%s&limit=%s&excludeFullGames=true" 
     local reqUrl = string.format(sfUrl, config.placeId, config.servers.sort, config.servers.count)
     local req = request({ Url = reqUrl })
@@ -247,6 +247,15 @@ end
 
 function listing_listener()
     local Booths_Broadcast = game:GetService("ReplicatedStorage").Network:WaitForChild("Booths_Broadcast")
+    local virtualuser = game:GetService("VirtualUser")
+    for i,v in pairs(getconnections(game:GetService("Players").LocalPlayer.Idled)) do
+        v:Disable()
+    end
+    game:GetService("Players").LocalPlayer.Idled:connect(function()
+    virtualuser:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+    wait(5)
+    virtualuser:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+    end)
     Booths_Broadcast.OnClientEvent:Connect(function(username, message)
         if not message then
             return
