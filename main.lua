@@ -2,7 +2,7 @@ UserSettings().GameSettings.MasterVolume = 0
 game.RunService:Set3dRenderingEnabled(false)
 
 if not waittime then
-    waittime = 30
+    waittime = 20
 end
 
 task.wait(waittime)
@@ -317,7 +317,6 @@ if game.PlaceId == 15502339080 and checkIfSnipersIngame() == false then
         return
     end
     Library = require(ReplicatedStorage.Library)
-    optimize()
     task.wait(waittime)
     listing_listener()
     task.spawn(function()
@@ -328,6 +327,7 @@ if game.PlaceId == 15502339080 and checkIfSnipersIngame() == false then
             end
         end
     end)
+    optimize()
     task.wait(configuration.hopTime)
     jumpToPlaza()
 elseif game.PlaceId == 15502339080 and checkIfSnipersIngame() == true then
