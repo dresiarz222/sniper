@@ -162,9 +162,6 @@ function optimize()
     HumanoidRootPart.Anchored = true
     task.wait(waittime)
     HumanoidRootPart.CFrame = CFrame.new(10000+math.random(1,2),10000+math.random(1,2),10000+math.random(1,2))
-    for i,v in ipairs(game.Players.LocalPlayer.PlayerGui:GetChildren()) do
-        v:ClearAllChildren()
-    end
 end
 
 TeleportService.TeleportInitFailed:Connect(function(player, resultEnum, msg) 
