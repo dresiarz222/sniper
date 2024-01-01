@@ -2,12 +2,12 @@ UserSettings().GameSettings.MasterVolume = 0
 game.RunService:Set3dRenderingEnabled(false)
 
 pcall(function()
-setfps(90)
-setfpscap(90)
+setfps(10)
+setfpscap(10)
 end)
 
 if not waittime then
-    waittime = 30
+    waittime = 25
 end
 
 task.wait(waittime)
@@ -169,16 +169,26 @@ TeleportService.TeleportInitFailed:Connect(function(player, resultEnum, msg)
     jumpToPlaza()
 end)
 
+function antiafk()
+    local vu = game:GetService("VirtualUser")
+    Players.LocalPlayer.Idled:connect(function()
+        vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+        task.wait(1)
+        vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+    end)
+end
+
 if game.PlaceId == 15502339080 and checkIfSnipersIngame() == false then
     task.wait(waittime)
     task.spawn(optimize)
+    antiafk()
     if not ReplicatedStorage:FindFirstChild("Library") then
         print("library bugged, hopping")
         jumpToPlaza()
         return
     end
     Library = require(ReplicatedStorage.Library)
-    task.wait(waittime)
+    task.wait(5)
     listing_listener()
     task.spawn(function()
         while task.wait(10) do
