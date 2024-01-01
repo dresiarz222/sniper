@@ -38,7 +38,7 @@ local TeleportService = game:GetService("TeleportService")
 getgenv().config = {
     placeId = 15502339080,
     servers = {
-        count = 10, 
+        count = 50, 
         sort = "Desc",
         pageDeep = 1,
     },
@@ -52,7 +52,7 @@ function jumpToPlaza()
     local servers = {} 
     if body and body.data then 
         for i, v in next, body.data do
-            if type(v) == "table" and tonumber(v.playing) and tonumber(v.maxPlayers) and v.playing >= 40 and v.playing < v.maxPlayers and v.id ~= game.JobId then 
+            if type(v) == "table" and tonumber(v.playing) and tonumber(v.maxPlayers) and v.playing >= 40 and v.playing < 48 and v.id ~= game.JobId then 
                 table.insert(servers, 1, v.id) 
             end 
         end 
@@ -247,12 +247,6 @@ end
 
 function listing_listener()
     local Booths_Broadcast = game:GetService("ReplicatedStorage").Network:WaitForChild("Booths_Broadcast")
-    --local vu = game:GetService("VirtualUser")
-    --game:GetService("Players").LocalPlayer.Idled:connect(function() 
-    --    vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame) 
-    --    task.wait(5) 
-    --    vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
-    --end)
     Booths_Broadcast.OnClientEvent:Connect(function(username, message)
         if not message then
             return
@@ -282,15 +276,6 @@ function listing_listener()
         end
     end)
 print("initiated")
-end
-
-function optimize()
-    plr = game.Players.LocalPlayer
-    for i,v in ipairs(game.Players:GetPlayers()) do
-        if v.UserId ~= plr.UserId then
-            v.Character:ClearAllChildren()
-        end
-    end
 end
 
 function checkIfSnipersIngame()
@@ -327,7 +312,6 @@ if game.PlaceId == 15502339080 and checkIfSnipersIngame() == false then
             end
         end
     end)
-    optimize()
     task.wait(configuration.hopTime)
     jumpToPlaza()
 elseif game.PlaceId == 15502339080 and checkIfSnipersIngame() == true then
