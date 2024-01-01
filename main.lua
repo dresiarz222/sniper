@@ -16,7 +16,7 @@ getgenv().configuration = {
         4576425139,
         4576430043,
     },
-    hopTime = 600,
+    hopTime = 900,
 }
 
 
