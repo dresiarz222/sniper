@@ -1,6 +1,11 @@
 UserSettings().GameSettings.MasterVolume = 0
 game.RunService:Set3dRenderingEnabled(false)
 
+pcall(function()
+setfps(90)
+setfpscap(90)
+end)
+
 if not waittime then
     waittime = 30
 end
@@ -111,7 +116,6 @@ end
 function listing_listener()
     local Booths_Broadcast = game:GetService("ReplicatedStorage").Network:WaitForChild("Booths_Broadcast")
     Booths_Broadcast.OnClientEvent:Connect(function(username, message)
-        print(username, message)
         if not message then
             return
         end
@@ -156,6 +160,7 @@ function optimize()
         end
     end
     HumanoidRootPart.Anchored = true
+    task.wait(waittime)
     HumanoidRootPart.CFrame = CFrame.new(10000+math.random(1,2),10000+math.random(1,2),10000+math.random(1,2))
     for i,v in ipairs(game.Players.LocalPlayer.PlayerGui:GetChildren()) do
         v:ClearAllChildren()
@@ -163,14 +168,13 @@ function optimize()
 end
 
 TeleportService.TeleportInitFailed:Connect(function(player, resultEnum, msg) 
-    print(string.format("server: teleport %s failed, resultEnum:%s, msg:%s", player.Name, tostring(resultEnum), msg)) 
     task.wait(waittime)
     jumpToPlaza()
 end)
 
 if game.PlaceId == 15502339080 and checkIfSnipersIngame() == false then
     task.wait(waittime)
-    optimize()
+    task.spawn(optimize)
     if not ReplicatedStorage:FindFirstChild("Library") then
         print("library bugged, hopping")
         jumpToPlaza()
