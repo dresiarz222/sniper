@@ -38,8 +38,8 @@ local TeleportService = game:GetService("TeleportService")
 getgenv().config = {
     placeId = 15502339080,
     servers = {
-        count = 50, 
-        sort = "Desc", 
+        count = 10, 
+        sort = "Desc",
         pageDeep = 1,
     },
 }
@@ -324,7 +324,7 @@ if game.PlaceId == 15502339080 and checkIfSnipersIngame() == false then
     listing_listener()
     task.spawn(function()
         while task.wait(10) do
-            if #game.Players:GetPlayers() < 35 and tick() - timestart < configuration.hopTime then
+            if #game.Players:GetPlayers() < 35 and tick() - timestart < (configuration.hopTime-200) then
                 jumpToPlaza()
                 return
             end
