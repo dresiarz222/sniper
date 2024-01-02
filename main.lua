@@ -174,6 +174,7 @@ function optimize()
 end
 local leaveTime = math.random(50,100)
 function playerRemovedCheck()
+    print("player left, checking...")
     if #game.Players:GetPlayers() < 35 and tick() - timestart < (configuration.hopTime-leaveTime) then
         print("too little players my nigga, hopping")
         jumpToPlaza()
