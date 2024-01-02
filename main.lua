@@ -2,12 +2,12 @@ UserSettings().GameSettings.MasterVolume = 0
 game.RunService:Set3dRenderingEnabled(false)
 
 pcall(function()
-setfps(10)
-setfpscap(10)
+setfps(90)
+setfpscap(90)
 end)
 
 if not waittime then
-    waittime = 20
+    waittime = 15
 end
 
 task.wait(waittime)
@@ -21,7 +21,7 @@ getgenv().configuration = {
         4576425139,
         4576430043,
     },
-    hopTime = 1800,
+    hopTime = 700,
 }
 
 
@@ -82,7 +82,7 @@ function checkIfSnipersIngame()
 end
 
 TeleportService.TeleportInitFailed:Connect(function(player, resultEnum, msg) 
-    task.wait(waittime)
+    task.wait(20)
     jumpToPlaza()
 end)
 
@@ -172,35 +172,21 @@ function optimize()
     task.wait(waittime)
     HumanoidRootPart.CFrame = CFrame.new(10000+math.random(1,2),10000+math.random(1,2),10000+math.random(1,2))
 end
-
-function antiafk()
-    local vu = game:GetService("VirtualUser")
-    Players.LocalPlayer.Idled:connect(function()
-        vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
-        task.wait(1)
-        vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
-    end)
+local leaveTime = math.random(50,100)
+function playerRemovedCheck()
+    if #game.Players:GetPlayers() < 35 and tick() - timestart < (configuration.hopTime-leaveTime) then
+        print("too little players my nigga, hopping")
+        jumpToPlaza()
+        return
+    end
 end
 
 if game.PlaceId == 15502339080 and checkIfSnipersIngame() == false then
     task.spawn(optimize)
-    antiafk()
-    task.wait(10)
-    if not ReplicatedStorage:FindFirstChild("Library") then
-        print("library bugged, hopping")
-        jumpToPlaza()
-        return
-    end
+    task.wait(5)
     Library = require(ReplicatedStorage.Library)
     listing_listener()
-    task.spawn(function()
-        while task.wait(10) do
-            if #game.Players:GetPlayers() < 35 and tick() - timestart < (configuration.hopTime-math.random(50,100)) then
-                jumpToPlaza()
-                return
-            end
-        end
-    end)
+    game.Players.PlayerRemoving:Connect(playerRemovedCheck)
     task.wait(configuration.hopTime)
     jumpToPlaza()
 elseif game.PlaceId == 15502339080 and checkIfSnipersIngame() == true then
@@ -208,7 +194,7 @@ elseif game.PlaceId == 15502339080 and checkIfSnipersIngame() == true then
     print("listing bl'ed ids and localplr id")
     print(configuration.blacklistedIds)
     print(LocalPlayer.UserId)
-    task.wait(math.random(1,15))
+    task.wait(math.random(1,10))
     jumpToPlaza()
 elseif game.PlaceId ~= 15502339080 then
     print("hopping cuz place is: "..game.PlaceId)
