@@ -7,7 +7,7 @@ setfpscap(90)
 end)
 
 if not waittime then
-    waittime = 15
+    waittime = 30
 end
 
 task.wait(waittime)
@@ -21,7 +21,7 @@ getgenv().configuration = {
         4576425139,
         4576430043,
     },
-    hopTime = 700,
+    hopTime = 800,
 }
 
 
@@ -164,7 +164,7 @@ end
 
 function optimize()
     for i,v in ipairs(game.Players:GetPlayers()) do
-        if v.UserId ~= LocalPlayer.UserId then
+        if v.UserId ~= LocalPlayer.UserId and v.Character then
             v.Character:ClearAllChildren()
         end
     end
@@ -175,7 +175,7 @@ end
 local leaveTime = math.random(50,100)
 function playerRemovedCheck()
     print("player left, checking...")
-    if #game.Players:GetPlayers() < 35 and tick() - timestart < (configuration.hopTime-leaveTime) then
+    if #game.Players:GetPlayers() < 30 and tick() - timestart < (configuration.hopTime-leaveTime) then
         print("too little players my nigga, hopping")
         jumpToPlaza()
         return
@@ -183,8 +183,8 @@ function playerRemovedCheck()
 end
 
 if game.PlaceId == 15502339080 and checkIfSnipersIngame() == false then
-    task.spawn(optimize)
-    task.wait(5)
+    task.wait(20)
+    pcall(optimize)
     Library = require(ReplicatedStorage.Library)
     listing_listener()
     game.Players.PlayerRemoving:Connect(playerRemovedCheck)
