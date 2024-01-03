@@ -7,7 +7,7 @@ setfpscap(90)
 end)
 
 if not waittime then
-    waittime = 30
+    waittime = 40
 end
 
 task.wait(waittime)
@@ -21,7 +21,7 @@ getgenv().configuration = {
         4576425139,
         4576430043,
     },
-    hopTime = 800,
+    hopTime = 1000,
 }
 
 
@@ -82,12 +82,12 @@ function checkIfSnipersIngame()
 end
 
 TeleportService.TeleportInitFailed:Connect(function(player, resultEnum, msg) 
-    task.wait(20)
+    task.wait(waittime)
     jumpToPlaza()
 end)
 
 if checkIfSnipersIngame() == true then
-    task.wait(math.random(1,5))
+    task.wait(math.random(1,5)+waittime)
     jumpToPlaza()
     return
 end
@@ -173,6 +173,7 @@ function optimize()
     HumanoidRootPart.CFrame = CFrame.new(10000+math.random(1,2),10000+math.random(1,2),10000+math.random(1,2))
 end
 local leaveTime = math.random(50,100)
+
 function playerRemovedCheck()
     print("player left, checking...")
     if #game.Players:GetPlayers() < 30 and tick() - timestart < (configuration.hopTime-leaveTime) then
@@ -195,7 +196,7 @@ elseif game.PlaceId == 15502339080 and checkIfSnipersIngame() == true then
     print("listing bl'ed ids and localplr id")
     print(configuration.blacklistedIds)
     print(LocalPlayer.UserId)
-    task.wait(math.random(1,10))
+    task.wait(math.random(1,10)+waittime)
     jumpToPlaza()
 elseif game.PlaceId ~= 15502339080 then
     print("hopping cuz place is: "..game.PlaceId)
