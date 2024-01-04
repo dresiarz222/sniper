@@ -9,7 +9,7 @@ end)
 if not waittime then
     waittime = 40
 end
-buyWaitTime = 3.1
+buyWaitTime = 3.05
 task.wait(waittime)
 
 getgenv().configuration = {
