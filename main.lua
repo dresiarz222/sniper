@@ -9,7 +9,7 @@ end)
 if not waittime then
     waittime = 40
 end
-
+buyWaitTime = 3.1
 task.wait(waittime)
 
 getgenv().configuration = {
@@ -152,6 +152,7 @@ function listing_listener()
                             local version = data["pt"]
                             local shiny = data["sh"]
                             local amount = data["_am"]
+                            task.wait(buyWaitTime)
                             checklisting(uid, gems, item, version, shiny, amount, username , playerID)
                         end
                     end
